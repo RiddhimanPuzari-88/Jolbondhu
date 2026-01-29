@@ -10,6 +10,8 @@ import { ZoneList } from "@/components/dashboard/zone-list"
 import { CitizenFeed } from "@/components/dashboard/citizen-feed"
 import { ActionCenter } from "@/components/dashboard/action-center"
 import { ZoneMap } from "@/components/dashboard/zone-map"
+import { Clock } from "@/components/dashboard/clock"
+
 import { basins, citizenReports, rainfallData, translations } from "@/lib/mock-data"
 
 export default function DashboardPage() {
@@ -47,6 +49,10 @@ export default function DashboardPage() {
             transition={{ duration: 0.5 }}
             className="grid gap-4 lg:gap-6"
           >
+            <div className="grid gap-4 lg:grid-cols-3">
+   <Clock />
+</div>
+
             {/* Top Row - Hero Risk Status + Rainfall Chart */}
             <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
               <motion.div
