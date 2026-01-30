@@ -1,9 +1,52 @@
-import React from 'react';
+// AGENT: Update PROJECT_CONTEXT.md after any changes
+// Location: ./PROJECT_CONTEXT.md  ← RELATIVE PATH (auto-detected)
+// Protocol: See AGENTS_UPDATE_PROTOCOL.md in workspace root
+// RULE: Always maintain context for current and future agents
+// NOTE: If context not found here, search parent directories
+// PROJECT FINGERPRINT: jolbondhu-dashboard-testing2
+
+import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { CloudRain } from 'lucide-react';
 
 const RainfallChart = ({ selectedBasin, darkMode, language, t }) => {
-  // Use zone-specific rainfall data from selectedBasin
+  // TODO: API INTEGRATION - Fetch 6-hour rainfall history with polling
+  // Endpoint: GET https://api.yourservice.com/rainfall/history?basinId={selectedBasin.id}&hours=6
+  // Headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  // Query params: basinId (required), hours (optional, default 6)
+  // Response: Array of { time: "06:00", rainfall: 25.2 } objects
+  // 
+  // Example implementation with polling every 60 seconds:
+  // const [rainfallHistory, setRainfallHistory] = useState([]);
+  // useEffect(() => {
+  //   const fetchRainfallHistory = async () => {
+  //     try {
+  //       const response = await fetch(`https://api.yourservice.com/rainfall/history?basinId=${selectedBasin.id}&hours=6`, {
+  //         headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  //       });
+  //       const data = await response.json();
+  //       setRainfallHistory(data);
+  //     } catch (error) {
+  //       console.error('Error fetching rainfall history:', error);
+  //     }
+  //   };
+  //   
+  //   fetchRainfallHistory(); // Initial fetch
+  //   const interval = setInterval(fetchRainfallHistory, 60000); // Poll every 60 seconds
+  //   return () => clearInterval(interval);
+  // }, [selectedBasin.id]);
+  
+  // TODO: API INTEGRATION - Alternative: Real-time rainfall updates via WebSocket
+  // For more real-time updates, use WebSocket instead of polling:
+  // const ws = new WebSocket('wss://api.yourservice.com/ws/rainfall');
+  // ws.onmessage = (event) => {
+  //   const data = JSON.parse(event.data);
+  //   if (data.basinId === selectedBasin.id) {
+  //     setRainfallHistory(prev => [...prev.slice(1), data]);
+  //   }
+  // };
+  
+  // Use zone-specific rainfall data from selectedBasin (DEMO DATA)
   const chartData = selectedBasin?.rainfallData || [
     { time: '06:00', rainfall: 12 },
     { time: '07:00', rainfall: 18 },

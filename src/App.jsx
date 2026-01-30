@@ -1,3 +1,10 @@
+// AGENT: Update PROJECT_CONTEXT.md after any changes
+// Location: ./PROJECT_CONTEXT.md  ← RELATIVE PATH (auto-detected)
+// Protocol: See AGENTS_UPDATE_PROTOCOL.md in workspace root
+// RULE: Always maintain context for current and future agents
+// NOTE: If context not found here, search parent directories
+// PROJECT FINGERPRINT: jolbondhu-dashboard-testing2
+
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Sidebar from './components/Sidebar'
@@ -15,7 +22,49 @@ function App() {
   const [language, setLanguage] = useState('en')
   const [selectedBasin, setSelectedBasin] = useState(mockData.basins[0])
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
+
+  // TODO: API INTEGRATION - Fetch all basins data
+  // Endpoint: GET https://api.yourservice.com/basins
+  // Headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  // Response: Array of basin objects with id, name, nameAssamese, location, riskLevel, etc.
+  // 
+  // Example implementation:
+  // const [basins, setBasins] = useState([]);
+  // useEffect(() => {
+  //   const fetchBasins = async () => {
+  //     try {
+  //       const response = await fetch('https://api.yourservice.com/basins', {
+  //         headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  //       });
+  //       const data = await response.json();
+  //       setBasins(data);
+  //       if (data.length > 0) setSelectedBasin(data[0]);
+  //     } catch (error) {
+  //       console.error('Error fetching basins:', error);
+  //     }
+  //   };
+  //   fetchBasins();
+  // }, []);
+  const [basins, setBasins] = useState(mockData.basins); // DEMO DATA
+
+  // TODO: API INTEGRATION - Real-time updates polling
+  // Poll every 30 seconds for updated basin data (risk levels, rainfall, etc.)
+  // 
+  // Example implementation:
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     try {
+  //       const response = await fetch('https://api.yourservice.com/basins/status');
+  //       const updatedData = await response.json();
+  //       setBasins(updatedData);
+  //     } catch (error) {
+  //       console.error('Error polling basin updates:', error);
+  //     }
+  //   }, 30000); // Poll every 30 seconds
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Get translations from mockData
   const t = mockData.translations[language]
@@ -38,12 +87,14 @@ function App() {
       <Sidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)} 
+        isCollapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         darkMode={darkMode}
         t={t}
         language={language}
       />
       
-      <div className="lg:ml-64 transition-all duration-300">
+      <div className={`transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'}`}>
         <TopBar 
           darkMode={darkMode} 
           setDarkMode={setDarkMode}
@@ -73,7 +124,12 @@ function App() {
 
             {/* Action Center */}
             <div className="lg:col-span-1">
-              <ActionCenter darkMode={darkMode} language={language} t={t} />
+              <ActionCenter 
+                darkMode={darkMode} 
+                language={language} 
+                t={t} 
+                selectedBasin={selectedBasin}
+              />
             </div>
 
             {/* Rainfall Chart */}

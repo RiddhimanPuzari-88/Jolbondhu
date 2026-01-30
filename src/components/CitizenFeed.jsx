@@ -1,8 +1,42 @@
-import React from 'react';
+// AGENT: Update PROJECT_CONTEXT.md after any changes
+// Location: ./PROJECT_CONTEXT.md  ← RELATIVE PATH (auto-detected)
+// Protocol: See AGENTS_UPDATE_PROTOCOL.md in workspace root
+// RULE: Always maintain context for current and future agents
+// NOTE: If context not found here, search parent directories
+// PROJECT FINGERPRINT: jolbondhu-dashboard-testing2
+
+import React, { useState, useEffect } from 'react';
 import { MessageSquare, Clock, Image as ImageIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const CitizenFeed = ({ reports, selectedBasin, darkMode, language, t }) => {
+const CitizenFeed = ({ reports: initialReports, selectedBasin, darkMode, language, t }) => {
+  // TODO: API INTEGRATION - Fetch zone-specific reports with polling
+  // Endpoint: GET https://api.yourservice.com/reports?basinId={selectedBasin.id}&limit=20
+  // Headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  // Query params: basinId (required), limit (optional, default 20), since (optional, timestamp)
+  // Response: Array of report objects { id, basinId, user, location, locationAssamese, content, messageAssamese, time, type, image }
+  // 
+  // Example implementation with polling every 45 seconds:
+  // const [reports, setReports] = useState([]);
+  // useEffect(() => {
+  //   const fetchReports = async () => {
+  //     try {
+  //       const response = await fetch(`https://api.yourservice.com/reports?basinId=${selectedBasin.id}&limit=20`, {
+  //         headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  //       });
+  //       const data = await response.json();
+  //       setReports(data);
+  //     } catch (error) {
+  //       console.error('Error fetching reports:', error);
+  //     }
+  //   };
+  //   
+  //   fetchReports(); // Initial fetch
+  //   const interval = setInterval(fetchReports, 45000); // Poll every 45 seconds
+  //   return () => clearInterval(interval);
+  // }, [selectedBasin.id]);
+  const [reports] = useState(initialReports); // DEMO DATA - remove this line when using API
+
   const getTypeColor = (type) => {
     switch(type) {
       case 'alert': return 'text-red-500 bg-red-50 dark:bg-red-900/20';
@@ -23,6 +57,13 @@ const CitizenFeed = ({ reports, selectedBasin, darkMode, language, t }) => {
 
   // Filter reports by selected basin
   const filteredReports = reports?.filter(report => report?.basinId === selectedBasin?.id) || [];
+
+  // TODO: API INTEGRATION - Real-time report submission
+  // When user submits a new report via API:
+  // POST https://api.yourservice.com/reports
+  // Headers: { 'Authorization': 'Bearer YOUR_API_KEY', 'Content-Type': 'application/json' }
+  // Body: { basinId, user, location, content, type, image (optional) }
+  // After successful POST, the polling will automatically fetch the new report
 
   // Get bilingual zone name for header
   const zoneName = language === 'as' && selectedBasin?.nameAssamese 

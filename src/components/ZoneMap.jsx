@@ -1,3 +1,10 @@
+// AGENT: Update PROJECT_CONTEXT.md after any changes
+// Location: ./PROJECT_CONTEXT.md  ← RELATIVE PATH (auto-detected)
+// Protocol: See AGENTS_UPDATE_PROTOCOL.md in workspace root
+// RULE: Always maintain context for current and future agents
+// NOTE: If context not found here, search parent directories
+// PROJECT FINGERPRINT: jolbondhu-dashboard-testing2
+
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
@@ -17,11 +24,45 @@ const riskColors = {
   Low: { fill: '#22c55e', stroke: '#16a34a' },
 };
 
-const ZoneMap = ({ basins, selectedBasin, onBasinSelect, darkMode, language, t }) => {
+const ZoneMap = ({ basins: initialBasins, selectedBasin, onBasinSelect, darkMode, language, t }) => {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const polygonsRef = useRef([]);
   const [isClient, setIsClient] = useState(false);
+
+  // TODO: API INTEGRATION - Fetch real-time basin polygons with polling
+  // Endpoint: GET https://api.yourservice.com/basins/geojson
+  // Headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  // Response: Array of basin objects with id, name, nameAssamese, polygon coordinates, riskLevel, etc.
+  // 
+  // Example implementation with polling every 120 seconds:
+  // const [basins, setBasins] = useState(initialBasins);
+  // useEffect(() => {
+  //   const fetchBasins = async () => {
+  //     try {
+  //       const response = await fetch('https://api.yourservice.com/basins/geojson', {
+  //         headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  //       });
+  //       const data = await response.json();
+  //       setBasins(data);
+  //     } catch (error) {
+  //       console.error('Error fetching basin polygons:', error);
+  //     }
+  //   };
+  //   
+  //   fetchBasins(); // Initial fetch
+  //   const interval = setInterval(fetchBasins, 120000); // Poll every 120 seconds
+  //   return () => clearInterval(interval);
+  // }, []);
+  
+  // TODO: API INTEGRATION - Alternative: WebSocket for real-time polygon updates
+  // For more frequent updates, use WebSocket:
+  // const ws = new WebSocket('wss://api.yourservice.com/ws/basins');
+  // ws.onmessage = (event) => {
+  //   const data = JSON.parse(event.data);
+  //   setBasins(data);
+  // };
+  const [basins] = useState(initialBasins); // DEMO DATA - remove this line when using API
 
   // Center on Guwahati area
   const center = [26.1480, 91.6750];

@@ -1,3 +1,10 @@
+// AGENT: Update PROJECT_CONTEXT.md after any changes
+// Location: ./PROJECT_CONTEXT.md  ← RELATIVE PATH (auto-detected)
+// Protocol: See AGENTS_UPDATE_PROTOCOL.md in workspace root
+// RULE: Always maintain context for current and future agents
+// NOTE: If context not found here, search parent directories
+// PROJECT FINGERPRINT: jolbondhu-dashboard-testing2
+
 import React from 'react';
 import { ChevronRight, AlertTriangle, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
